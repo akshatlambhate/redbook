@@ -25,7 +25,7 @@ const HeroSection = () => {
     },[])
 
   return (
-    <div className='pb-20 px-4'>
+    <div className='pb-20 px-4 overflow-hidden'>
         <div className='container mx-auto text-center'>
             <h1 className='text-5xl md:text-8xl lg:text-[105px] pb-6 gradient-title'>
                 Manage Your Finances <br />With Intelligence

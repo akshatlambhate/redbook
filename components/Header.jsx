@@ -11,9 +11,11 @@ import Image from 'next/image'
 import Logo from '../public/logo.png'
 import { Button } from './ui/button'
 import { LayoutDashboard, PenBox } from 'lucide-react'
+import { checkUser } from '@/lib/checkUser'
 
 
-const Header = () => {
+const Header = async() => {
+    await checkUser()
   return (
     <div className='fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b'>
 
@@ -23,21 +25,23 @@ const Header = () => {
              </Link>
              <div className='flex items-center space-x-4'>
                 <SignedIn>
-                    <Link href={'/dashboard'} className='text-gray-600 hover:text-blue-600 items-center gap-2'>
+                    <Link href={"/dashboard"} className='text-gray-600 hover:text-blue-600 flex items-center gap-2'>
                     <Button variant ='outline'>
                         <LayoutDashboard />
                         <span className='hidden md:inline'>Dashboard</span>
                     </Button>
                     </Link>
-                    <Link href={'/transaction'} className='text-gray-600 hover:text-blue-600 items-center gap-2'>
+
+                    <Link href={'/transaction/create'} className=' flex text-gray-600 hover:text-blue-600 items-center gap-2'>
                     <Button variant =''>
                         <PenBox size={18} />
                         <span className='hidden md:inline'>Transaction</span>
                     </Button>
                     </Link>
                 </SignedIn>
+                
                  <SignedOut>
-              <SignInButton forceRedirectUrl='/dashboard'>
+              <SignInButton forceRedirectUrl={'/dashboard'}>
                 <Button variant ='outline'>Login</Button>
               </SignInButton>
               {/* <SignUpButton /> */}
