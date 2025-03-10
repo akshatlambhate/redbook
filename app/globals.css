@@ -123,7 +123,7 @@
 
 @layer utilities{
   .gradient{
-    @apply bg-gradient-to-br from-blue-600 to-purple-600
+    @apply bg-gradient-to-br from-[#ef233c] to-[#fcb9b2]
 
   }
   .gradient-title{

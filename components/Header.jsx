@@ -21,7 +21,7 @@ const Header = async() => {
 
         <nav className='container mx-auto px-4 py-4 flex items-center justify-between'>
             <Link href='/' >
-            <Image src={Logo} height={60} width={200} className='h-12 w-auto object-contain'  alt='logo image'/>
+            <Image src={Logo} height={100} width={500} className='h-20 w-auto object-contain'  alt='logo image'/>
              </Link>
              <div className='flex items-center space-x-4'>
                 <SignedIn>

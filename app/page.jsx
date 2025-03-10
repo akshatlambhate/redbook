@@ -11,12 +11,12 @@ export default function Home() {
   return (
     <div className="mt-40">
       <HeroSection />
-      <section className="py-20 bg-blue-50">
+      <section className="py-20 bg-red-50">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             {statsData.map(( statsData,key)=>(
               <div key={key} className="text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">{statsData.value}</div>
+                <div className="text-4xl font-bold text-red-600 mb-2">{statsData.value}</div>
                 <div className="text-gray-600">{statsData.label}</div>
               </div>
             ))}
@@ -43,13 +43,13 @@ export default function Home() {
 
       </section>
    
-      <section className="py-20 bg-blue-50">
+      <section className="py-20 bg-red-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">How it works</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {howItWorksData.map((step, index)=>(
               <div key={index} className="text-center" >
-              <div className='w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6'>
+              <div className='w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6'>
                 {step.icon}</div>
            <h3 className="text-xl font-semibold mb-4">{step.title}</h3>
            <p className="text-gray-600">{step.description}</p>
@@ -91,12 +91,12 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="py-20 bg-blue-600">
+      <section className="py-20 bg-pink-600">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-3xl font-bold text-center mb-4">Ready to Take Control of Your Finances ?</h2>
            <p className="text-blue-100 mb-8 max-w-2xl mx-auto">Join thousand of users who are already managing their finances smarter with RedBook</p>
            <Link href='/dashboard'>
-           <Button className='bg-white text-blue-600 hover:bg-blue-50 animate-bounce' >
+           <Button className='bg-white text-red-600 hover:bg-blue-50 animate-bounce' >
             Start Free Trail
            </Button>
            

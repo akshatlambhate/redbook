@@ -47,9 +47,16 @@ const HeroSection = () => {
             </Link>
 
         </div>
-        <div className='hero-image-wrapper '>
-            <div  ref={imageRef} className='hero-image'>
-                <Image src='/banner.jpeg' height={720} width={1280} alt='Dashboard Preview' className='rounded-lg shadow-2xl border mx-auto' priority />
+        <div className='hero-image-wrapper flex '>
+            <div  ref={imageRef} className='hero-image w-2/3'>
+                <Image src='/banner.jpg' height={720} width={1280} alt='Dashboard Preview' className='rounded-lg shadow-2xl border mx-auto' priority />
+            </div> 
+            <div className='w-1/3 flex items-center'>
+            <h1 className='text-5xl md:text-8xl lg:text-[105px] pb-6 gradient-title'>
+                Manage Your Finances <br />With Intelligence
+            </h1>
+             
+
             </div>
         </div>
         
