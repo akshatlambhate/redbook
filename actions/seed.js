@@ -3,8 +3,8 @@
 import { db } from "@/lib/prisma";
 import { subDays } from "date-fns";
 
-const ACCOUNT_ID = "cbc5d078-bcc7-478b-9c3c-7f3437de1ba6";
-const USER_ID = "3ad395c0-cfbf-4085-982a-26b224e26d5c";
+const ACCOUNT_ID = "account-id";
+const USER_ID = "user-id";
 
 // Categories with their typical amount ranges
 const CATEGORIES = {
@@ -43,17 +43,18 @@ function getRandomCategory(type) {
 
 export async function seedTransactions() {
   try {
-    console.log("🚀 Starting seedTransactions...");
-
-    // Generate transactions
+    // Generate 90 days of transactions
     const transactions = [];
     let totalBalance = 0;
 
     for (let i = 90; i >= 0; i--) {
       const date = subDays(new Date(), i);
+
+      // Generate 1-3 transactions per day
       const transactionsPerDay = Math.floor(Math.random() * 3) + 1;
 
       for (let j = 0; j < transactionsPerDay; j++) {
+        // 40% chance of income, 60% chance of expense
         const type = Math.random() < 0.4 ? "INCOME" : "EXPENSE";
         const { category, amount } = getRandomCategory(type);
 
@@ -61,7 +62,9 @@ export async function seedTransactions() {
           id: crypto.randomUUID(),
           type,
           amount,
-          description: `${type === "INCOME" ? "Received" : "Paid for"} ${category}`,
+          description: `${
+            type === "INCOME" ? "Received" : "Paid for"
+          } ${category}`,
           date,
           category,
           status: "COMPLETED",
@@ -73,80 +76,34 @@ export async function seedTransactions() {
 
         totalBalance += type === "INCOME" ? amount : -amount;
         transactions.push(transaction);
-        console.log(transactions[0])
       }
     }
 
-    console.log(`📊 Generated ${transactions.length} transactions`);
-    console.log(`💰 Total Balance to update: ${totalBalance}`);
-
+    // Insert transactions in batches and update account balance
     await db.$transaction(async (tx) => {
-      // Validate transactions before inserting
-if (transactions.length > 0) {
-  // Debugging: Check first transaction structure
-  console.log("🔍 Sample Transaction:", transactions[0]);
-
-  // Ensure every transaction has required fields
-  const validTransactions = transactions.filter((t) =>
-    t.id && t.type && t.amount && t.description && t.date && t.category &&
-    t.status && t.userId && t.accountId && t.createdAt && t.updatedAt
-  );
-
-  console.log(`✅ Valid transactions count: ${validTransactions.length}`);
-
-  if (validTransactions.length === 0) {
-    throw new Error("🚨 No valid transactions to insert!");
-  }
-
-  await tx.transaction.createMany({
-    data: validTransactions,
-  });
-} else {
-  console.warn("⚠️ No transactions to insert!");
-}
-
-      // Check if account exists
-      const account = await tx.account.findUnique({
-        where: { id: ACCOUNT_ID },
-      });
-
-      console.log("🧾 Account fetched:", account);
-
-      if (!account) {
-        throw new Error("⚠️ Account not found!");
-      }
-
       // Clear existing transactions
-      console.log("🗑️ Deleting existing transactions...");
       await tx.transaction.deleteMany({
         where: { accountId: ACCOUNT_ID },
       });
 
-      // Insert new transactions (only if there are transactions)
-      if (transactions.length > 0) {
-        console.log("📝 Inserting new transactions...");
-        await tx.transaction.createMany({
-          data: transactions,
-        });
-      } else {
-        console.log("⚠️ No transactions to insert!");
-      }
+      // Insert new transactions
+      await tx.transaction.createMany({
+        data: transactions,
+      });
 
       // Update account balance
-      console.log(`💵 Updating account balance to: ${totalBalance || 0}`);
       await tx.account.update({
         where: { id: ACCOUNT_ID },
-        data: { balance: totalBalance || 0 },
+        data: { balance: totalBalance },
       });
     });
 
-    console.log("✅ Seeding completed successfully!");
     return {
       success: true,
       message: `Created ${transactions.length} transactions`,
     };
   } catch (error) {
-    console.log("❌ Error seeding transactions:", error);
+    console.error("Error seeding transactions:", error);
     return { success: false, error: error.message };
   }
 }
